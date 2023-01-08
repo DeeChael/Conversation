@@ -10,12 +10,14 @@ import java.util.List;
 
 /**
  * Builder to create new node
+ *
  * @author DeeChael
  */
 public interface NodeBuilder {
 
     /**
      * Set the button of this node
+     *
      * @param button button, null for clearing the button
      * @return builder
      */
@@ -23,6 +25,7 @@ public interface NodeBuilder {
 
     /**
      * The text to show
+     *
      * @param text text
      * @return builder
      */
@@ -31,6 +34,7 @@ public interface NodeBuilder {
 
     /**
      * Set wait how long to show options or next text
+     *
      * @param seconds time
      * @return builder
      */
@@ -39,6 +43,7 @@ public interface NodeBuilder {
 
     /**
      * Add sub nodes
+     *
      * @param nodes sub nodes
      * @return builder
      */
@@ -47,6 +52,7 @@ public interface NodeBuilder {
 
     /**
      * Add sub nodes
+     *
      * @param nodes sub nodes
      * @return builder
      */
@@ -55,6 +61,7 @@ public interface NodeBuilder {
 
     /**
      * Build node object
+     *
      * @return node
      */
     @NotNull

@@ -24,6 +24,7 @@ public final class ConversationAPI {
         return new ButtonBuilderImpl();
     }
 
-    private ConversationAPI() {}
+    private ConversationAPI() {
+    }
 
 }

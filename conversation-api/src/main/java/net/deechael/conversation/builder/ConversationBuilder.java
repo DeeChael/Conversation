@@ -9,12 +9,14 @@ import java.util.List;
 
 /**
  * Builder to create a new conversation
+ *
  * @author DeeChael
  */
 public interface ConversationBuilder {
 
     /**
      * The text to show
+     *
      * @param text text
      * @return builder
      */
@@ -23,6 +25,7 @@ public interface ConversationBuilder {
 
     /**
      * The name of the npc who is having conversation with the player
+     *
      * @param name npc name
      * @return builder
      */
@@ -31,6 +34,7 @@ public interface ConversationBuilder {
 
     /**
      * Append nodes
+     *
      * @param nodes new nodes
      * @return builder
      */
@@ -39,6 +43,7 @@ public interface ConversationBuilder {
 
     /**
      * Append nodes
+     *
      * @param nodes new nodes
      * @return builder
      */
@@ -47,6 +52,7 @@ public interface ConversationBuilder {
 
     /**
      * Set wait how long to show options or next text
+     *
      * @param seconds time
      * @return builder
      */
@@ -55,6 +61,7 @@ public interface ConversationBuilder {
 
     /**
      * Build conversation object
+     *
      * @return conversation
      */
     Conversation build();

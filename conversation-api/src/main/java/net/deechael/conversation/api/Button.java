@@ -11,12 +11,14 @@ import java.util.function.Consumer;
 
 /**
  * Choice button
+ *
  * @author DeeChael
  */
 public interface Button {
 
     /**
      * Get the name of the button
+     *
      * @return name
      */
     @NotNull
@@ -24,6 +26,7 @@ public interface Button {
 
     /**
      * Get the hover text of the button
+     *
      * @return hover
      */
     @Nullable
@@ -31,6 +34,7 @@ public interface Button {
 
     /**
      * Get the executor of this button
+     *
      * @return executor
      */
     @Nullable

@@ -35,6 +35,7 @@ public final class PlayerUtil {
         ConversationPlugin.getAdventure().player(player).sendMessage(component);
     }
 
-    private PlayerUtil() {}
+    private PlayerUtil() {
+    }
 
 }

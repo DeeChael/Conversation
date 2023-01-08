@@ -10,7 +10,6 @@ import net.deechael.conversation.util.StrUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEventSource;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -159,6 +158,7 @@ public final class ConversationManager implements Listener {
 
     }
 
-    private ConversationManager() {}
+    private ConversationManager() {
+    }
 
 }

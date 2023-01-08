@@ -10,6 +10,7 @@ public interface ConversationEvent {
 
     /**
      * Get the player of this event
+     *
      * @return player
      */
     @NotNull

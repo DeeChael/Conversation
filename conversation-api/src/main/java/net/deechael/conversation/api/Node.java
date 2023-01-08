@@ -10,12 +10,14 @@ import java.util.List;
 
 /**
  * Node in conversation which provides more possibility for conversation
+ *
  * @author DeeChael
  */
 public interface Node {
 
     /**
      * Get the button of the node
+     *
      * @return button
      */
     @Nullable
@@ -23,6 +25,7 @@ public interface Node {
 
     /**
      * Get sub nodes
+     *
      * @return nodes
      */
     @NotNull
@@ -30,6 +33,7 @@ public interface Node {
 
     /**
      * Get text to show
+     *
      * @return text
      */
     @NotNull
@@ -37,6 +41,7 @@ public interface Node {
 
     /**
      * Get how long to wait
+     *
      * @return time
      */
     int waiting();

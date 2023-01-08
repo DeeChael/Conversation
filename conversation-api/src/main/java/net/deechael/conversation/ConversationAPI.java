@@ -11,6 +11,7 @@ public final class ConversationAPI {
 
     /**
      * Create new conversation
+     *
      * @return conversation builder
      */
     public static ConversationBuilder newConversation() {
@@ -19,6 +20,7 @@ public final class ConversationAPI {
 
     /**
      * Create new node
+     *
      * @return node builder
      */
     public static NodeBuilder newNode() {
@@ -27,12 +29,14 @@ public final class ConversationAPI {
 
     /**
      * Create new button
+     *
      * @return button builder
      */
     public static ButtonBuilder newButton() {
         throw new RuntimeException("Not implemented yet");
     }
 
-    private ConversationAPI() {}
+    private ConversationAPI() {
+    }
 
 }

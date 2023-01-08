@@ -10,12 +10,14 @@ import java.util.List;
 
 /**
  * Conversation object which contains the nodes of the whole conversation
+ *
  * @author DeeChael
  */
 public interface Conversation {
 
     /**
      * Get the text of the conversation
+     *
      * @return text
      */
     @NotNull
@@ -23,6 +25,7 @@ public interface Conversation {
 
     /**
      * The name of the npc who is having conversation with the player
+     *
      * @return name
      */
     @NotNull
@@ -30,6 +33,7 @@ public interface Conversation {
 
     /**
      * Get nodes of the conversation
+     *
      * @return nodes
      */
     @NotNull
@@ -37,12 +41,14 @@ public interface Conversation {
 
     /**
      * Get how long to wait
+     *
      * @return time
      */
     int waiting();
 
     /**
      * Start conversation for a player
+     *
      * @param player player
      */
     void start(@NotNull Player player);

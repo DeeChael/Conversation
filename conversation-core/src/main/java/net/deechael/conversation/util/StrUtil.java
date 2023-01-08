@@ -39,6 +39,7 @@ public final class StrUtil {
         }
     }
 
-    private StrUtil() {}
+    private StrUtil() {
+    }
 
 }

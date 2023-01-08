@@ -10,12 +10,14 @@ import java.util.function.Consumer;
 
 /**
  * Builder to create a new button
+ *
  * @author DeeChael
  */
 public interface ButtonBuilder {
 
     /**
      * The name of this button
+     *
      * @param component name
      * @return builder
      */
@@ -24,6 +26,7 @@ public interface ButtonBuilder {
 
     /**
      * The hover text of this button
+     *
      * @param component hover tips
      * @return builder
      */
@@ -32,6 +35,7 @@ public interface ButtonBuilder {
 
     /**
      * Set the executor of the button
+     *
      * @param executor executor
      * @return builder
      */
@@ -40,6 +44,7 @@ public interface ButtonBuilder {
 
     /**
      * Build button object
+     *
      * @return button
      */
     @NotNull

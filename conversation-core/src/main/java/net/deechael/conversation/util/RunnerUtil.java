@@ -9,6 +9,7 @@ public final class RunnerUtil {
         runnable.runTaskLater(ConversationPlugin.getInstance(), delay * 20L);
     }
 
-    private RunnerUtil() {}
+    private RunnerUtil() {
+    }
 
 }
