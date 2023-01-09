@@ -20,7 +20,7 @@ public class Example {
                                         .name(Component.text("[YES, AN APPLE PLEASE]").color(NamedTextColor.RED))
                                         .hover(Component.text("Click to get an apple").color(NamedTextColor.YELLOW))
                                         .executor(event -> {
-                                            event.player().getInventory().addItem(new ItemStack(Material.APPLE));
+                                            event.getPlayer().getInventory().addItem(new ItemStack(Material.APPLE));
                                         })
                                         .build())
                                 .text(Component.text("Okay, here you are!"))
