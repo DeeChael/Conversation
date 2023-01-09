@@ -87,8 +87,9 @@ public class ConversationTest extends JavaPlugin implements Listener {
             commandMap.register("conversation", new Command("test") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
-                    if (!(sender instanceof Player player))
+                    if (!(sender instanceof Player))
                         return true;
+                    Player player = (Player) sender;
                     buildConversation().start(player);
                     return true;
                 }
