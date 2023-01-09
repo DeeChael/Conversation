@@ -3,7 +3,9 @@ package net.deechael.conversation.builder;
 import net.deechael.conversation.api.Conversation;
 import net.deechael.conversation.api.Node;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -58,6 +60,15 @@ public interface ConversationBuilder {
      */
     @NotNull
     ConversationBuilder waiting(int seconds);
+
+    /**
+     * Set the sound to play when conversation
+     *
+     * @param sound sound type
+     * @return builder
+     */
+    @NotNull
+    ConversationBuilder sound(@Nullable Sound sound);
 
     /**
      * Build conversation object

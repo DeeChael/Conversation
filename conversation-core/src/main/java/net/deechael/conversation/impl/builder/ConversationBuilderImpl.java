@@ -5,7 +5,9 @@ import net.deechael.conversation.api.Node;
 import net.deechael.conversation.builder.ConversationBuilder;
 import net.deechael.conversation.impl.ConversationImpl;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +19,7 @@ public class ConversationBuilderImpl implements ConversationBuilder {
     private Component name;
     private final List<Node> nodes = new ArrayList<>();
     private int waiting = 0;
+    private Sound sound;
 
     @Override
     public @NotNull ConversationBuilder text(@NotNull Component text) {
@@ -49,12 +52,18 @@ public class ConversationBuilderImpl implements ConversationBuilder {
     }
 
     @Override
+    public @NotNull ConversationBuilder sound(@Nullable Sound sound) {
+        this.sound = sound;
+        return this;
+    }
+
+    @Override
     public Conversation build() {
         if (this.text == null)
             throw new RuntimeException("text should not be null!");
         if (this.name == null)
             throw new RuntimeException("name should not be null!");
-        return new ConversationImpl(this.text, this.name, this.nodes, this.waiting);
+        return new ConversationImpl(this.text, this.name, this.nodes, this.waiting, this.sound);
     }
 
 }

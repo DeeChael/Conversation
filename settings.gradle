@@ -1,4 +1,5 @@
 rootProject.name = 'conversation'
 include 'conversation-api'
 include 'conversation-core'
+include 'conversation-test'
 

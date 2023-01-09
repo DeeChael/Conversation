@@ -3,6 +3,7 @@ package net.deechael.conversation.api;
 import net.deechael.conversation.ConversationAPI;
 import net.deechael.conversation.builder.NodeBuilder;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,6 +46,15 @@ public interface Node {
      * @return time
      */
     int waiting();
+
+    /**
+     * Get the sound to play when conversation
+     *
+     * @return sound
+     */
+    @Nullable
+    Sound sound();
+
 
     static NodeBuilder of() {
         return ConversationAPI.newNode();

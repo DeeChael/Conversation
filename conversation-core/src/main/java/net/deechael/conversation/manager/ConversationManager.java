@@ -1,8 +1,10 @@
 package net.deechael.conversation.manager;
 
 import net.deechael.conversation.api.Button;
+import net.deechael.conversation.api.Conversation;
 import net.deechael.conversation.api.Node;
-import net.deechael.conversation.event.ChoiceEvent;
+import net.deechael.conversation.event.ConversationEndEvent;
+import net.deechael.conversation.event.ConversationEvent;
 import net.deechael.conversation.impl.event.ChoiceEventImpl;
 import net.deechael.conversation.util.PlayerUtil;
 import net.deechael.conversation.util.RunnerUtil;
@@ -10,6 +12,7 @@ import net.deechael.conversation.util.StrUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,8 +25,8 @@ import java.util.function.Consumer;
 
 public final class ConversationManager implements Listener {
 
-    private final static Map<String, NodeData> QUEUE = new HashMap<>();
-    private final static Map<UUID, String> PLAYER = new HashMap<>();
+    private final static Map<String, Node> QUEUE = new HashMap<>();
+    private final static Map<UUID, ConversationData> PLAYER = new HashMap<>();
 
     public final static ConversationManager INSTANCE = new ConversationManager();
 
@@ -45,56 +48,65 @@ public final class ConversationManager implements Listener {
         String queueId = split[1];
         if (!QUEUE.containsKey(queueId))
             return;
-        if (!Objects.equals(queueId, PLAYER.get(player.getUniqueId())))
+        ConversationData data = PLAYER.get(player.getUniqueId());
+        if (!Objects.equals(queueId, data.queueId))
             return;
         if (!StrUtil.isInteger(split[2]))
             return;
         int buttonIndex = Integer.parseInt(split[2]);
-        NodeData data = QUEUE.get(queueId);
-        List<Node> nodes = data.node.sub();
+        Node node = QUEUE.get(queueId);
+        List<Node> nodes = node.sub();
         if (buttonIndex < 0 || buttonIndex >= nodes.size())
             return;
         Node nextNode = nodes.get(buttonIndex);
         Button button = nextNode.button();
         if (button == null) {
-            clearPlayerData(player);
+            clearPlayerData(player, ConversationEndEvent.Reason.BAD_DATA);
             return;
         }
-        Consumer<ChoiceEvent> executor = button.executor();
+        Consumer<ConversationEvent> executor = button.executor();
         if (executor != null)
-            executor.accept(new ChoiceEventImpl(player));
-        nextNode(player, data.name, nextNode);
+            executor.accept(new ChoiceEventImpl(data.conversation, node, button, player));
+        nextNode(player, data.conversation, nextNode);
     }
 
     @EventHandler
     public void event(PlayerQuitEvent event) {
-        clearPlayerData(event.getPlayer());
+        clearPlayerData(event.getPlayer(), ConversationEndEvent.Reason.QUIT);
     }
 
-    public void clearPlayerData(Player player) {
+    public void clearPlayerData(Player player, ConversationEndEvent.Reason reason) {
         if (PLAYER.containsKey(player.getUniqueId())) {
-            QUEUE.remove(PLAYER.get(player.getUniqueId()));
-            PLAYER.remove(player.getUniqueId());
+            Node node = QUEUE.remove(PLAYER.get(player.getUniqueId()).queueId);
+            ConversationData data = PLAYER.remove(player.getUniqueId());
+            ConversationEndEvent event = new ConversationEndEvent(data.conversation, node, player, reason);
+            RunnerUtil.call(event, true);
         }
     }
 
-    public void nextNode(Player player, Component name, Node node) {
+    public void nextNode(Player player, Conversation conversation, Node node) {
         if (PLAYER.containsKey(player.getUniqueId())) {
-            QUEUE.remove(PLAYER.get(player.getUniqueId()));
+            QUEUE.remove(PLAYER.get(player.getUniqueId()).queueId);
         }
         String queueId = StrUtil.random(16, QUEUE.keySet());
-        PLAYER.put(player.getUniqueId(), queueId);
-        QUEUE.put(queueId, NodeData.of(name, node));
+        if (!PLAYER.containsKey(player.getUniqueId()))
+            PLAYER.put(player.getUniqueId(), ConversationData.of(conversation));
+        PLAYER.get(player.getUniqueId()).queueId = queueId;
+        QUEUE.put(queueId, node);
 
         Component message = Component.text("    ").appendNewline()
                 .append(Component.text("    ")).appendNewline()
-                .append(Component.text("    ")).append(name).appendNewline()
+                .append(Component.text("    ")).append(conversation.name()).appendNewline()
                 .append(Component.text("    ")).appendNewline()
                 .append(Component.text("    ")).append(node.text())
-                .append(Component.text("    ")).appendNewline()
                 .append(Component.text("    ")).appendNewline();
 
-        BukkitRunnable runnable = null;
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                clearPlayerData(player, ConversationEndEvent.Reason.COMPLETE);
+            }
+        };
 
         List<Node> nodes = node.sub();
         boolean pass = false;
@@ -104,7 +116,7 @@ public final class ConversationManager implements Listener {
                 runnable = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        nextNode(player, name, next);
+                        nextNode(player, conversation, next);
                     }
                 };
                 pass = true;
@@ -112,7 +124,7 @@ public final class ConversationManager implements Listener {
         }
         if (!pass)
             if (nodes.size() >= 1) {
-                Component buttonBase = Component.text("");
+                Component buttonBase = Component.text("    ").appendNewline();
                 for (int i = 0; i < nodes.size(); i++) {
                     Node buttonNode = nodes.get(i);
                     if (buttonNode.button() == null)
@@ -126,7 +138,6 @@ public final class ConversationManager implements Listener {
 
                     buttonBase = buttonBase.append(Component.text("    ")).append(buttonComponent.build()).appendNewline();
                 }
-                buttonBase = buttonBase.append(Component.text("    ")).appendNewline();
 
                 Component finalButtonBase = buttonBase;
                 runnable = new BukkitRunnable() {
@@ -136,23 +147,29 @@ public final class ConversationManager implements Listener {
                     }
                 };
             }
-
+        Sound sound = node.sound();
+        if (sound != null)
+            player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
         PlayerUtil.clearScreen(player);
         PlayerUtil.send(player, message);
-        if (runnable != null) {
-            RunnerUtil.run(runnable, node.waiting());
-        }
+        RunnerUtil.run(runnable, node.waiting());
     }
 
-    private static class NodeData {
+    private static class ConversationData {
 
-        private Component name;
-        private Node node;
+        private Conversation conversation;
+        private String queueId;
 
-        private static NodeData of(Component name, Node node) {
-            NodeData data = new NodeData();
-            data.name = name;
-            data.node = node;
+        private static ConversationData of(Conversation conversation) {
+            ConversationData data = new ConversationData();
+            data.conversation = conversation;
+            return data;
+        }
+
+        private static ConversationData of(Conversation conversation, String queueId) {
+            ConversationData data = new ConversationData();
+            data.conversation = conversation;
+            data.queueId = queueId;
             return data;
         }
 

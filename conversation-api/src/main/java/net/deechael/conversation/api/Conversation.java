@@ -3,8 +3,10 @@ package net.deechael.conversation.api;
 import net.deechael.conversation.ConversationAPI;
 import net.deechael.conversation.builder.ConversationBuilder;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -45,6 +47,14 @@ public interface Conversation {
      * @return time
      */
     int waiting();
+
+    /**
+     * Get the sound to play when conversation
+     *
+     * @return sound
+     */
+    @Nullable
+    Sound sound();
 
     /**
      * Start conversation for a player

@@ -5,6 +5,7 @@ import net.deechael.conversation.api.Node;
 import net.deechael.conversation.builder.NodeBuilder;
 import net.deechael.conversation.impl.NodeImpl;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +19,7 @@ public class NodeBuilderImpl implements NodeBuilder {
     private final List<Node> nodes = new ArrayList<>();
     private Component text;
     private int waiting = 0;
+    private Sound sound;
 
     @Override
     public NodeBuilder button(@Nullable Button button) {
@@ -50,10 +52,16 @@ public class NodeBuilderImpl implements NodeBuilder {
     }
 
     @Override
+    public @NotNull NodeBuilder sound(@Nullable Sound sound) {
+        this.sound = sound;
+        return this;
+    }
+
+    @Override
     public @NotNull Node build() {
         if (this.text == null)
             throw new RuntimeException("text should not be null!");
-        return new NodeImpl(this.button, this.nodes, this.text, this.waiting);
+        return new NodeImpl(this.button, this.nodes, this.text, this.waiting, this.sound);
     }
 
 }

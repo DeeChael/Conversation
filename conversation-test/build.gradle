@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'xyz.jpenilla.run-paper' version '2.0.0'
+}
+
+group 'net.deechael'
+version '1.00.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT'
+    compileOnly 'org.jetbrains:annotations:23.1.0'
+    compileOnly "net.kyori:adventure-api:4.12.0"
+    compileOnly project(':conversation-api')
+
+    implementation project(':conversation-core')
+}
+
+runServer {
+    // You should copy conversation-core.jar into plugins directory manually
+    minecraftVersion("1.19.3")
+}

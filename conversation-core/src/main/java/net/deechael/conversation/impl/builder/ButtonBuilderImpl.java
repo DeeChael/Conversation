@@ -2,7 +2,7 @@ package net.deechael.conversation.impl.builder;
 
 import net.deechael.conversation.api.Button;
 import net.deechael.conversation.builder.ButtonBuilder;
-import net.deechael.conversation.event.ChoiceEvent;
+import net.deechael.conversation.event.ConversationEvent;
 import net.deechael.conversation.impl.ButtonImpl;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +14,7 @@ public class ButtonBuilderImpl implements ButtonBuilder {
 
     private Component name;
     private Component hover;
-    private Consumer<ChoiceEvent> executor;
+    private Consumer<ConversationEvent> executor;
 
     @Override
     public @NotNull ButtonBuilder name(@NotNull Component component) {
@@ -29,7 +29,7 @@ public class ButtonBuilderImpl implements ButtonBuilder {
     }
 
     @Override
-    public @NotNull ButtonBuilder executor(@Nullable Consumer<ChoiceEvent> executor) {
+    public @NotNull ButtonBuilder executor(@Nullable Consumer<ConversationEvent> executor) {
         this.executor = executor;
         return this;
     }

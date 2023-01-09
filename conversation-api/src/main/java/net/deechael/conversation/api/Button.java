@@ -2,7 +2,7 @@ package net.deechael.conversation.api;
 
 import net.deechael.conversation.ConversationAPI;
 import net.deechael.conversation.builder.ButtonBuilder;
-import net.deechael.conversation.event.ChoiceEvent;
+import net.deechael.conversation.event.ConversationEvent;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +38,7 @@ public interface Button {
      * @return executor
      */
     @Nullable
-    Consumer<ChoiceEvent> executor();
+    Consumer<ConversationEvent> executor();
 
     static ButtonBuilder of() {
         return ConversationAPI.newButton();
