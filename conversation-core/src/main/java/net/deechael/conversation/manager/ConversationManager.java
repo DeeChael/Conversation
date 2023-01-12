@@ -5,6 +5,7 @@ import net.deechael.conversation.api.Conversation;
 import net.deechael.conversation.api.Node;
 import net.deechael.conversation.event.ConversationEndEvent;
 import net.deechael.conversation.event.ConversationEvent;
+import net.deechael.conversation.event.SwitchNodeEvent;
 import net.deechael.conversation.impl.event.ChoiceEventImpl;
 import net.deechael.conversation.util.PlayerUtil;
 import net.deechael.conversation.util.RunnerUtil;
@@ -148,9 +149,11 @@ public final class ConversationManager implements Listener {
                 };
             }
         Sound sound = node.sound();
+        SwitchNodeEvent event = new SwitchNodeEvent(conversation, node, player);
+        RunnerUtil.call(event, true);
+        PlayerUtil.clearScreen(player);
         if (sound != null)
             player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
-        PlayerUtil.clearScreen(player);
         PlayerUtil.send(player, message);
         RunnerUtil.run(runnable, node.waiting());
     }
